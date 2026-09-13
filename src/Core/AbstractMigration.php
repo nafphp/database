@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Core;
+namespace Naf\Database\Core;
 
 abstract class AbstractMigration implements MigrationInterface
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures;
 
-use NixPHP\Database\Core\Database;
+use Naf\Database\Core\Database;
 
 class DummyDatabase extends Database
 {

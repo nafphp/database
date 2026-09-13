@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use NixPHP\CLI\Support\CommandRegistry;
-use NixPHP\Database\Commands\MigrateCommand;
-use NixPHP\Database\Commands\MigrationCreateCommand;
-use NixPHP\Database\Core\Database;
-use NixPHP\Database\Support\MigrationRegistry;
-use function NixPHP\app;
-use function NixPHP\config;
+use Naf\CLI\Support\CommandRegistry;
+use Naf\Database\Commands\MigrateCommand;
+use Naf\Database\Commands\MigrationCreateCommand;
+use Naf\Database\Core\Database;
+use Naf\Database\Support\MigrationRegistry;
+use function Naf\app;
+use function Naf\config;
 
 app()->container()->set(Database::class, function() {
     $config = config('database');
@@ -26,7 +26,7 @@ if (is_array($migrationPaths)) {
     }
 }
 
-if (app()->hasPlugin('nixphp/cli')) {
+if (app()->hasPlugin('naf/cli')) {
     $commandRegistry = app()->container()->get(CommandRegistry::class);
     $commandRegistry->add(MigrateCommand::class);
     $commandRegistry->add(MigrationCreateCommand::class);

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Commands;
+namespace Naf\Database\Commands;
 
-use NixPHP\CLI\Core\AbstractCommand;
-use NixPHP\CLI\Core\Input;
-use NixPHP\CLI\Core\Output;
-use function NixPHP\app;
+use Naf\CLI\Core\AbstractCommand;
+use Naf\CLI\Core\Input;
+use Naf\CLI\Core\Output;
+use function Naf\app;
 
 /**
  * Command that scaffolds application migration files.
@@ -69,7 +69,7 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use PDO;
-use NixPHP\Database\Core\AbstractMigration;
+use Naf\Database\Core\AbstractMigration;
 
 class Migration{$timestamp} extends AbstractMigration
 {

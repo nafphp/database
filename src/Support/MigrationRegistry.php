@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Support;
+namespace Naf\Database\Support;
 
 final class MigrationRegistry
 {

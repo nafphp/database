@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Commands;
+namespace Naf\Database\Commands;
 
-use NixPHP\Database\Core\MigrationInterface;
-use NixPHP\Database\Support\MigrationRegistry;
+use Naf\Database\Core\MigrationInterface;
+use Naf\Database\Support\MigrationRegistry;
 use PDO;
-use NixPHP\CLI\Core\Input;
-use NixPHP\CLI\Core\Output;
-use NixPHP\CLI\Exception\ConsoleException;
-use NixPHP\CLI\Core\AbstractCommand;
-use function NixPHP\config;
-use function NixPHP\Database\database;
+use Naf\CLI\Core\Input;
+use Naf\CLI\Core\Output;
+use Naf\CLI\Exception\ConsoleException;
+use Naf\CLI\Core\AbstractCommand;
+use function Naf\config;
+use function Naf\Database\database;
 
 class MigrateCommand extends AbstractCommand
 {

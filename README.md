@@ -1,23 +1,23 @@
 <div style="text-align: center;">
 
-![Logo](https://nixphp.github.io/docs/assets/nixphp-logo-small-square.png)
+![NAF](assets/naf-logo-small-square.png)
 
-[![NixPHP Database Plugin](https://github.com/nixphp/database/actions/workflows/php.yml/badge.svg)](https://github.com/nixphp/database/actions/workflows/php.yml)
+[![NAF Database Plugin](https://github.com/nafphp/database/actions/workflows/php.yml/badge.svg)](https://github.com/nafphp/database/actions/workflows/php.yml)
 
 </div>
 
-[← Back to NixPHP](https://github.com/nixphp/framework)
+[← Back to NAF](https://github.com/nafphp/framework)
 
 ---
 
-# nixphp/database
+# naf/database
 
-> **Simple, native PDO connection for your NixPHP application.**
+> **Simple, native PDO connection for your NAF application.**
 
 This plugin provides a shared **PDO instance** via the service container,
 supporting both **MySQL/MariaDB** and **SQLite** out of the box — with sensible defaults.
 
-> 🧩 Part of the official NixPHP plugin collection.
+> 🧩 Part of the official NAF plugin collection.
 > Install it when you need a native, PSR-compliant database connection — and nothing more.
 
 ---
@@ -35,7 +35,7 @@ supporting both **MySQL/MariaDB** and **SQLite** out of the box — with sensibl
 ## 📥 Installation
 
 ```bash
-composer require nixphp/database
+composer require naf/database
 ```
 
 Then add the following configuration to `/app/config.php`.
@@ -135,7 +135,7 @@ The PDO instance comes with these options:
 
 ## ✅ Requirements
 
-* `nixphp/framework` >= 0.1.0
+* `naf/framework` >= 0.1.0
 
 ---
 

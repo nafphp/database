@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database;
+namespace Naf\Database;
 
-use NixPHP\Database\Core\Database;
-use function NixPHP\app;
+use Naf\Database\Core\Database;
+use function Naf\app;
 
 function database():? \PDO
 {

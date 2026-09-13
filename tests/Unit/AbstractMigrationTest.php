@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use NixPHP\Database\Core\AbstractMigration;
-use Tests\NixPHPTestCase;
+use Naf\Database\Core\AbstractMigration;
+use Tests\NafTestCase;
 
-class AbstractMigrationTest extends NixPHPTestCase
+class AbstractMigrationTest extends NafTestCase
 {
     public function testDefaultShouldRunReturnsTrue(): void
     {

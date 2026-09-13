@@ -14,7 +14,7 @@
 - `MigrationInterface` now requires a `shouldRun()` implementation, which means any class that implemented the interface directly must either implement the method or extend `AbstractMigration`. The minimum change looks like this:
   ```php
   use PDO;
-  use NixPHP\Database\Core\MigrationInterface;
+  use Naf\Database\Core\MigrationInterface;
 
   class LegacyMigration implements MigrationInterface
   {

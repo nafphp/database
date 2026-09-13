@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Core;
+namespace Naf\Database\Core;
 
 use PDO;
 use PDOException;
-use NixPHP\Database\Exceptions\DatabaseException;
+use Naf\Database\Exceptions\DatabaseException;
 
 class Database
 {

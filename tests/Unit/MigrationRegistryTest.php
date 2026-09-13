@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use NixPHP\Database\Support\MigrationRegistry;
-use Tests\NixPHPTestCase;
+use Naf\Database\Support\MigrationRegistry;
+use Tests\NafTestCase;
 
-class MigrationRegistryTest extends NixPHPTestCase
+class MigrationRegistryTest extends NafTestCase
 {
     protected function setUp(): void
     {

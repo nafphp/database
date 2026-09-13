@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace NixPHP\Database\Exceptions;
+namespace Naf\Database\Exceptions;
 
 class DatabaseException extends \PDOException
 {
