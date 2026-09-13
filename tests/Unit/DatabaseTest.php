@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Tests\Fixtures\DummyDatabase;
-use NixPHP\Database\Core\Database;
-use NixPHP\Database\Exceptions\DatabaseException;
-use Tests\NixPHPTestCase;
+use Naf\Database\Core\Database;
+use Naf\Database\Exceptions\DatabaseException;
+use Tests\NafTestCase;
 
-class DatabaseTest extends NixPHPTestCase
+class DatabaseTest extends NafTestCase
 {
 
     public function testBuildsMysqlDsnWithDefaultPort(): void
@@ -85,7 +85,7 @@ class DatabaseTest extends NixPHPTestCase
 
     public function testConstructCreatesPdoInstance(): void
     {
-        $pdoMock = $this->createMock(\PDO::class);
+        $pdoStub = $this->createStub(\PDO::class);
 
         $config = [
             'driver'   => 'mysql',
@@ -96,9 +96,9 @@ class DatabaseTest extends NixPHPTestCase
             'password' => 'pass',
         ];
 
-        $db = new Database($config, fn() => $pdoMock);
+        $db = new Database($config, fn() => $pdoStub);
 
-        $this->assertSame($pdoMock, $db->getConnection());
+        $this->assertSame($pdoStub, $db->getConnection());
     }
 
     public function testExceptionWhileConnecting()
@@ -135,7 +135,7 @@ class DatabaseTest extends NixPHPTestCase
 
     public function testHelperFunction()
     {
-        $this->assertNull(\NixPHP\Database\database());
+        $this->assertNull(\Naf\Database\database());
     }
 
 }
