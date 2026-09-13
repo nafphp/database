@@ -20,125 +20,20 @@ supporting both **MySQL/MariaDB** and **SQLite** out of the box — with sensibl
 > 🧩 Part of the official NAF plugin collection.
 > Install it when you need a native, PSR-compliant database connection — and nothing more.
 
----
+## Documentation
 
-## 📦 Features
+**[Database →](https://nafphp.github.io/docs/database/)**
 
-* ✅ Shared `PDO` instance, ready to use
-* ✅ MySQL/MariaDB and SQLite support
-* ✅ Uses sane defaults (error mode, fetch mode, UTF-8 charset)
-* ✅ Works with memory databases (`sqlite::memory:`)
-* ✅ Available via `database()` helper or DI container
+Everything about this package — what it does, how it is configured and what it needs — lives
+in the [NAF documentation](https://nafphp.github.io/docs/). Not sure which packages you need?
+[Start here](https://nafphp.github.io/docs/choosing-packages/).
 
----
-
-## 📥 Installation
+## Install
 
 ```bash
 composer require naf/database
 ```
 
-Then add the following configuration to `/app/config.php`.
-You can choose between **MySQL/MariaDB** or **SQLite**.
+## License
 
-### Example: MySQL
-
-```php
-<?php
-
-return [
-    // ...
-    'database' => [
-        'driver'   => 'mysql',
-        'host'     => '127.0.0.1',
-        'database' => 'myapp',
-        'username' => 'root',
-        'password' => '',
-        'charset'  => 'utf8mb4',
-    ]
-];
-```
-
-### Example: SQLite
-
-```php
-<?php
-
-return [
-    // ...
-    'database' => [
-        'driver'   => 'sqlite',
-        'database' => __DIR__ . '/../storage/database.sqlite',
-    ]
-];
-```
-
-Or for in-memory SQLite:
-
-```php
-return [
-    // ...
-    'database' => [
-        'driver'   => 'sqlite',
-        'database' => ':memory:',
-    ]
-];
-```
-
----
-
-## 🚀 Usage
-
-Access the PDO instance globally via:
-
-```php
-$pdo = database();
-```
-
-Or retrieve it manually from the service container:
-
-```php
-$pdo = app()->container()->get(Database::class);
-```
-
-Use it as usual with native PDO:
-
-```php
-$stmt = database()->prepare('SELECT * FROM users WHERE id = ?');
-$stmt->execute([$id]);
-$user = $stmt->fetch(); // default: FETCH_ASSOC
-```
-
----
-
-## ⚙️ Defaults applied
-
-The PDO instance comes with these options:
-
-```php
-[
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-]
-```
-
----
-
-## 🔍 Internals
-
-* Loads config from `/app/config.php` from the key `database`
-* Builds DSN based on a given driver (`mysql`, `sqlite`)
-* Wraps PDO creation in a factory, handles exceptions gracefully
-* Registers `database` in the container and provides the `database()` helper
-
----
-
-## ✅ Requirements
-
-* `naf/framework` >= 0.1.0
-
----
-
-## 📄 License
-
-MIT License.
+MIT. Part of [NAF](https://github.com/nafphp/framework).
