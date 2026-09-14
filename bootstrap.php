@@ -16,6 +16,17 @@ app()->container()->set(Database::class, function() {
     return new Database($config);
 });
 
+// A concrete PDO dependency requires a connection; the public helper remains nullable.
+if (!app()->container()->has(PDO::class)) {
+    app()->container()->set(PDO::class, static function ($container): PDO {
+        $database = $container->get(Database::class);
+        if (!$database instanceof Database) {
+            throw new \Naf\Database\Exceptions\DatabaseException('A PDO connection is required, but database configuration is missing.');
+        }
+        return $database->getConnection();
+    });
+}
+
 MigrationRegistry::addPath(app()->getBasePath() . '/app/Migrations');
 
 $migrationPaths = config('database:migrationPaths');

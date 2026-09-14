@@ -23,7 +23,7 @@ class Database
             $pdoFactory ??= fn() => new PDO($dsn, $username, $password, $options);
             $this->pdo = $pdoFactory();
         } catch (PDOException $e) {
-            throw new DatabaseException('Database connection failed: ' . $e->getMessage());
+            throw new DatabaseException('Database connection failed: ' . $e->getMessage(), 0, $e);
         }
     }
 
@@ -47,14 +47,19 @@ class Database
         $port = $config['port'] ?? $defaultPort;
         $portSegment = $port !== null ? sprintf(';port=%s', $port) : '';
 
-        return sprintf(
-            '%s:host=%s;dbname=%s%s;charset=%s',
-            $driver,
-            $config['host'] ?? '127.0.0.1',
-            $config['database'] ?? '',
-            $portSegment,
-            $config['charset'] ?? 'utf8mb4'
-        );
+        if ($driver === 'pgsql') {
+            foreach (['host', 'database'] as $key) {
+                if (str_contains((string)($config[$key] ?? ''), ';')) {
+                    throw new DatabaseException('Invalid PostgreSQL connection parameter: ' . $key);
+                }
+            }
+            return sprintf('pgsql:host=%s;dbname=%s%s', $config['host'] ?? '127.0.0.1', $config['database'] ?? '', $portSegment);
+        }
+        if ($driver !== 'mysql') {
+            throw new DatabaseException('Unsupported PDO driver: ' . $driver);
+        }
+        return sprintf('mysql:host=%s;dbname=%s%s;charset=%s',
+            $config['host'] ?? '127.0.0.1', $config['database'] ?? '', $portSegment, $config['charset'] ?? 'utf8mb4');
     }
 
     /**

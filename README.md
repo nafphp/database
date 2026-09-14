@@ -37,3 +37,10 @@ composer require naf/database
 ## License
 
 MIT. Part of [NAF](https://github.com/nafphp/framework).
+
+
+## Unreleased Nafinity integration candidate
+
+Target branch: `v0.2.2-rc`. This behavior is not a published release yet.
+
+PostgreSQL DSNs no longer contain the MySQL charset attribute. The optional database() helper remains nullable; required PDO injection has an explicit lazy binding. MigrationRunner globally orders all registered paths, tracks FQCN identities, upgrades unambiguous legacy names, and rolls back in reverse applied order. PostgreSQL/SQLite migration DDL and tracking are transactional; MySQL DDL must be restartable because it implicitly commits. Run migrations outside application transactions.

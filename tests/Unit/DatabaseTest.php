@@ -38,7 +38,7 @@ class DatabaseTest extends NafTestCase
 
         $db = new DummyDatabase($config);
 
-        $this->assertSame('pgsql:host=localhost;dbname=testdb;port=5432;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame('pgsql:host=localhost;dbname=testdb;port=5432', $db->getLastDsn());
         $this->assertSame('pgsql', $db->usedDriver);
     }
 
