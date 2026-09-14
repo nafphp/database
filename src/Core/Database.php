@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Naf\Database\Core;
 
+use Naf\Database\Exceptions\DatabaseException;
 use PDO;
 use PDOException;
-use Naf\Database\Exceptions\DatabaseException;
 
 class Database
 {
@@ -44,22 +44,34 @@ class Database
         }
 
         $defaultPort = $this->defaultPortForDriver($driver);
-        $port = $config['port'] ?? $defaultPort;
+        $port        = $config['port'] ?? $defaultPort;
         $portSegment = $port !== null ? sprintf(';port=%s', $port) : '';
 
         if ($driver === 'pgsql') {
             foreach (['host', 'database'] as $key) {
-                if (str_contains((string)($config[$key] ?? ''), ';')) {
+                if (str_contains((string) ($config[$key] ?? ''), ';')) {
                     throw new DatabaseException('Invalid PostgreSQL connection parameter: ' . $key);
                 }
             }
-            return sprintf('pgsql:host=%s;dbname=%s%s', $config['host'] ?? '127.0.0.1', $config['database'] ?? '', $portSegment);
+
+            return sprintf(
+                'pgsql:host=%s;dbname=%s%s',
+                $config['host'] ?? '127.0.0.1',
+                $config['database'] ?? '',
+                $portSegment,
+            );
         }
         if ($driver !== 'mysql') {
             throw new DatabaseException('Unsupported PDO driver: ' . $driver);
         }
-        return sprintf('mysql:host=%s;dbname=%s%s;charset=%s',
-            $config['host'] ?? '127.0.0.1', $config['database'] ?? '', $portSegment, $config['charset'] ?? 'utf8mb4');
+
+        return sprintf(
+            'mysql:host=%s;dbname=%s%s;charset=%s',
+            $config['host'] ?? '127.0.0.1',
+            $config['database'] ?? '',
+            $portSegment,
+            $config['charset'] ?? 'utf8mb4',
+        );
     }
 
     /**
@@ -69,9 +81,7 @@ class Database
     {
         $database = $config['database'] ?? ':memory:';
 
-        return $database === ':memory:'
-            ? 'sqlite::memory:'
-            : 'sqlite:' . $database;
+        return $database === ':memory:' ? 'sqlite::memory:' : 'sqlite:' . $database;
     }
 
     /**
@@ -80,10 +90,10 @@ class Database
     private function defaultPortForDriver(string $driver): ?int
     {
         return match ($driver) {
-            'mysql', 'mysqli' => 3306,
+            'mysql', 'mysqli'   => 3306,
             'pgsql', 'postgres' => 5432,
-            'sqlsrv' => 1433,
-            default => null,
+            'sqlsrv'            => 1433,
+            default             => null,
         };
     }
 
