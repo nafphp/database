@@ -7,6 +7,7 @@ namespace Naf\Database\Commands;
 use Naf\CLI\Core\AbstractCommand;
 use Naf\CLI\Core\Input;
 use Naf\CLI\Core\Output;
+
 use function Naf\app;
 
 /**
@@ -19,7 +20,6 @@ use function Naf\app;
  */
 class MigrationCreateCommand extends AbstractCommand
 {
-
     public const string NAME = 'db:migration:create';
 
     protected function configure(): void
@@ -29,11 +29,6 @@ class MigrationCreateCommand extends AbstractCommand
             ->setDescription('Create a skeleton migration in your application.');
     }
 
-    /**
-     * @param Input $input
-     * @param Output $output
-     * @return int
-     */
     public function run(Input $input, Output $output): int
     {
         $timestamp = time();
@@ -55,43 +50,29 @@ class MigrationCreateCommand extends AbstractCommand
         return AbstractCommand::SUCCESS;
     }
 
-    /**
-     * @param int $timestamp
-     * @return string
-     */
     private function buildTemplate(int $timestamp): string
     {
         return <<<PHP
-<?php
+        <?php
 
-declare(strict_types=1);
+        declare(strict_types=1);
 
-namespace App\Migrations;
+        namespace App\Migrations;
 
-use PDO;
-use Naf\Database\Core\AbstractMigration;
+        use Naf\Database\Core\AbstractMigration;
+        use PDO;
 
-class Migration{$timestamp} extends AbstractMigration
-{
+        class Migration{$timestamp} extends AbstractMigration
+        {
+            public function up(PDO \$connection): void
+            {
+            }
 
-    /**
-     * @param PDO \$connection
-     */
-    public function up(PDO \$connection): void
-    {
-        
+            public function down(PDO \$connection): void
+            {
+            }
+        }
+
+        PHP;
     }
-
-    /**
-     * @param PDO \$connection
-     */
-    public function down(PDO \$connection): void
-    {
-        
-    }
-}
-
-PHP;
-    }
-
 }
