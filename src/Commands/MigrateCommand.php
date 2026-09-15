@@ -22,7 +22,7 @@ class MigrateCommand extends AbstractCommand
         $this->setTitle('Execute Migrations')
             ->setDescription('Execute migrations in either direction.')
             ->addArgument('direction')
-            ->addOption('name', 'n');
+            ->addOption('name', 'n', true);
     }
 
     public function run(Input $input, Output $output): int
@@ -31,18 +31,27 @@ class MigrateCommand extends AbstractCommand
         if (!in_array($direction, ['up', 'down'], true)) {
             throw new ConsoleException('Invalid direction given.');
         }
+        $longName  = $input->getOption('name');
+        $shortName = $input->getOption('n');
+        $name      = $longName ?? $shortName;
+
+        if (
+            ($longName !== null && $shortName !== null)
+            || ($name !== null && (!is_string($name) || trim($name) === ''))
+        ) {
+            throw new ConsoleException('Use --name or -n with exactly one non-empty migration name.');
+        }
+
         $connection = database();
         if ($connection === null) {
             $output->writeLine('Database connection not found.', 'error');
 
             return self::ERROR;
         }
-        $option   = $input->getOption('name');
-        $name     = is_array($option) ? $option[0] ?? null : $option;
         $executed = (new MigrationRunner($connection))->run(
             MigrationRegistry::getPaths(),
             $direction,
-            is_string($name) ? $name : null,
+            $name,
         );
         foreach ($executed as $class) {
             $output->writeLine($direction . ' ' . $class, 'ok');

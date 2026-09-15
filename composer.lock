@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9d93b1713fe429f21631054155c04ac5",
+    "content-hash": "a778d04d0a92987d991ee32d9e03efa1",
     "packages": [
         {
             "name": "naf/framework",
-            "version": "v0.2.1",
+            "version": "v0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nafphp/framework.git",
-                "reference": "415db594f2ddf7aea5e5f571cb1bbc859568029c"
+                "reference": "acabfb56a205b9134c1dc61274e2aa9b5fbf574a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nafphp/framework/zipball/415db594f2ddf7aea5e5f571cb1bbc859568029c",
-                "reference": "415db594f2ddf7aea5e5f571cb1bbc859568029c",
+                "url": "https://api.github.com/repos/nafphp/framework/zipball/acabfb56a205b9134c1dc61274e2aa9b5fbf574a",
+                "reference": "acabfb56a205b9134c1dc61274e2aa9b5fbf574a",
                 "shasum": ""
             },
             "require": {
@@ -58,9 +58,9 @@
             "description": "NAF - the ultra-light, functional PHP framework for fast microservices and APIs.",
             "support": {
                 "issues": "https://github.com/nafphp/framework/issues",
-                "source": "https://github.com/nafphp/framework/tree/v0.2.1"
+                "source": "https://github.com/nafphp/framework/tree/v0.2.3"
             },
-            "time": "2026-09-13T13:44:52+00:00"
+            "time": "2026-09-13T20:16:13+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -478,6 +478,55 @@
                 }
             ],
             "time": "2026-08-11T10:17:44+00:00"
+        },
+        {
+            "name": "naf/cli",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nafphp/cli.git",
+                "reference": "e6606b08c514a00fb527c4d8be9bbb26313cf720"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nafphp/cli/zipball/e6606b08c514a00fb527c4d8be9bbb26313cf720",
+                "reference": "e6606b08c514a00fb527c4d8be9bbb26313cf720",
+                "shasum": ""
+            },
+            "require": {
+                "ext-readline": "*",
+                "naf/framework": "^0.2",
+                "php": ">=8.3"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^12.1",
+                "phpunit/phpunit": "^12.1"
+            },
+            "bin": [
+                "bin/naf"
+            ],
+            "type": "naf-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Naf\\CLI\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Flo Knapp",
+                    "email": "office@florianknapp.de"
+                }
+            ],
+            "description": "NAF CLI Plugin for console applications.",
+            "support": {
+                "issues": "https://github.com/nafphp/cli/issues",
+                "source": "https://github.com/nafphp/cli/tree/v0.2.1"
+            },
+            "time": "2026-09-13T19:56:34+00:00"
         },
         {
             "name": "nikic/php-parser",

@@ -36,7 +36,7 @@ $product = $statement->fetch();
 
 The helper returns `?PDO`, not a query builder. Error mode is exceptions and rows default
 to associative arrays. Use bound parameters for values and allow-lists for dynamic identifiers.
-Reuse this connection; bind `PDO::class` explicitly if a consuming service needs it injected.
+The 0.2.2 candidate lazily binds `PDO::class` to this same connection unless already bound.
 
 ## Change it here
 
