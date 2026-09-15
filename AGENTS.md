@@ -36,7 +36,7 @@ $product = $statement->fetch();
 
 The helper returns `?PDO`, not a query builder. Error mode is exceptions and rows default
 to associative arrays. Use bound parameters for values and allow-lists for dynamic identifiers.
-Reuse this connection; bind `PDO::class` explicitly if a consuming service needs it injected.
+The 0.2.2 candidate lazily binds `PDO::class` to this same connection unless already bound.
 
 ## Change it here
 
@@ -54,3 +54,7 @@ cannot establish PostgreSQL/MySQL concurrency behavior. Verify migrations and ro
 throwaway databases. No `analyse` script is declared.
 
 User docs: [Database](https://nafphp.github.io/docs/database/).
+
+Follow the shared [PHP code style](https://github.com/nafphp/docs/blob/main/CODE_STYLE.md)
+and `.php-cs-fixer.dist.php`. Run `composer style:check`; `composer style:fix` applies the rules.
+Keep logical steps and local names readable, preserving public signatures and template output.
