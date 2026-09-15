@@ -4,3 +4,4 @@ vendor/
 .run/
 tests/Fixtures/logs/
 .DS_Store
+/.php-cs-fixer.cache
