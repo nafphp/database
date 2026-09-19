@@ -39,9 +39,7 @@ composer require naf/database
 MIT. Part of [NAF](https://github.com/nafphp/framework).
 
 
-## Unreleased Nafinity integration candidate
-
-Target branch: `v0.2.2-rc`. This behavior is not a published release yet.
+## Behavior notes
 
 Select one migration with `vendor/bin/naf db:migrate up --name=M001Example` or
 `vendor/bin/naf db:migrate down -n M001Example`. Fully qualified names disambiguate
