@@ -30,7 +30,7 @@ class MigrationRegistryTest extends NafTestCase
 
     public function testAddPathRegistersUniquePaths(): void
     {
-        $base = sys_get_temp_dir() . '/migration_registry_' . uniqid();
+        $base   = sys_get_temp_dir() . '/migration_registry_' . uniqid();
         $second = $base . '_extra';
 
         mkdir($base, 0755, true);

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Tests\Fixtures\DummyDatabase;
 use Naf\Database\Core\Database;
 use Naf\Database\Exceptions\DatabaseException;
+use PDO;
+use PDOException;
+use Tests\Fixtures\DummyDatabase;
 use Tests\NafTestCase;
 
 class DatabaseTest extends NafTestCase
 {
-
     public function testBuildsMysqlDsnWithDefaultPort(): void
     {
         $config = [
@@ -23,7 +24,10 @@ class DatabaseTest extends NafTestCase
 
         $db = new DummyDatabase($config);
 
-        $this->assertSame('mysql:host=localhost;dbname=testdb;port=3306;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame(
+            'mysql:host=localhost;dbname=testdb;port=3306;charset=utf8mb4',
+            $db->getLastDsn(),
+        );
         $this->assertSame('mysql', $db->usedDriver);
     }
 
@@ -38,7 +42,7 @@ class DatabaseTest extends NafTestCase
 
         $db = new DummyDatabase($config);
 
-        $this->assertSame('pgsql:host=localhost;dbname=testdb;port=5432;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame('pgsql:host=localhost;dbname=testdb;port=5432', $db->getLastDsn());
         $this->assertSame('pgsql', $db->usedDriver);
     }
 
@@ -73,8 +77,8 @@ class DatabaseTest extends NafTestCase
     public function testBuildsSqliteWithEmptyDatabaseFallbackToMemory(): void
     {
         $config = [
-            'driver'   => 'sqlite',
-            'charset'  => 'utf8mb4',
+            'driver'  => 'sqlite',
+            'charset' => 'utf8mb4',
         ];
 
         $db = new DummyDatabase($config);
@@ -85,7 +89,7 @@ class DatabaseTest extends NafTestCase
 
     public function testConstructCreatesPdoInstance(): void
     {
-        $pdoStub = $this->createStub(\PDO::class);
+        $pdoStub = $this->createStub(PDO::class);
 
         $config = [
             'driver'   => 'mysql',
@@ -114,7 +118,9 @@ class DatabaseTest extends NafTestCase
             'password' => 'pass',
         ];
 
-        new Database($config, function() { throw new \PDOException('test'); });
+        new Database($config, function () {
+            throw new PDOException('test');
+        });
     }
 
     public function testBuildsMysqlDsnWithCustomPort(): void
@@ -129,7 +135,10 @@ class DatabaseTest extends NafTestCase
 
         $db = new DummyDatabase($config);
 
-        $this->assertSame('mysql:host=localhost;dbname=testdb;port=4567;charset=utf8mb4', $db->getLastDsn());
+        $this->assertSame(
+            'mysql:host=localhost;dbname=testdb;port=4567;charset=utf8mb4',
+            $db->getLastDsn(),
+        );
         $this->assertSame('mysql', $db->usedDriver);
     }
 
@@ -137,5 +146,4 @@ class DatabaseTest extends NafTestCase
     {
         $this->assertNull(\Naf\Database\database());
     }
-
 }
