@@ -39,7 +39,14 @@ if (!app()->container()->has(PDO::class)) {
         });
 }
 
-MigrationRegistry::addPath(app()->getBasePath() . '/app/Migrations');
+// Both layouts, in that order. An application keeps its code in app/ or in
+// src/ -- naf/framework already accepts either for plugins.php, and a host laid
+// out the second way had no conventional place for its migrations until now.
+// addPath ignores a directory that is not there, so a project only ever
+// registers the one it actually has.
+foreach (['/app/Migrations', '/src/Migrations'] as $conventional) {
+    MigrationRegistry::addPath(app()->getBasePath() . $conventional);
+}
 
 $migrationPaths = config('database:migrationPaths');
 
