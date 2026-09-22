@@ -6,6 +6,7 @@ namespace Tests\Unit;
 
 use Naf\Database\Core\MigrationRunner;
 use PDO;
+use PDOException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -61,5 +62,37 @@ final class MigrationRunnerTest extends TestCase
                 ->query("SELECT COUNT(*) FROM sqlite_master WHERE name='partial_items'")
                 ->fetchColumn(),
         );
+    }
+
+    public function testPendingUsesTheCompletePlanWithoutWritingOrUpgradingHistory(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+        $pdo->exec("CREATE TABLE migrations(id INTEGER PRIMARY KEY, name VARCHAR(255)); INSERT INTO migrations(name) VALUES('M001Parent')");
+        $runner = new MigrationRunner($pdo);
+        $paths  = [__DIR__ . '/../Fixtures/Migrations/second', __DIR__ . '/../Fixtures/Migrations/first'];
+        $this->assertSame(['Tests\\Fixtures\\Migrations\\M002Child'], $runner->pending($paths));
+        $this->assertSame('M001Parent', $pdo->query('SELECT name FROM migrations')->fetchColumn());
+        $this->assertSame(0, (int) $pdo->query("SELECT COUNT(*) FROM sqlite_master WHERE name IN ('parent_items','child_items')")->fetchColumn());
+    }
+
+    public function testPendingDoesNotCreateAMissingTracker(): void
+    {
+        $pdo = new PDO('sqlite::memory:');
+
+        try {
+            (new MigrationRunner($pdo))->pending([__DIR__ . '/../Fixtures/Migrations/first']);
+            $this->fail('A missing tracker must not be reported ready.');
+        } catch (PDOException) {
+            $this->assertSame(0, (int) $pdo->query("SELECT COUNT(*) FROM sqlite_master WHERE name='migrations'")->fetchColumn());
+        }
+    }
+
+    public function testAppliedAndSkippedMigrationsAreNotPending(): void
+    {
+        $pdo    = new PDO('sqlite::memory:');
+        $runner = new MigrationRunner($pdo);
+        $paths  = [__DIR__ . '/../Fixtures/Migrations/first', __DIR__ . '/../Fixtures/Migrations/skipped'];
+        $runner->run($paths, 'up');
+        $this->assertSame([], $runner->pending($paths));
     }
 }
