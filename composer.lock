@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18e45811c6d441d548fb539dd55cf818",
+    "content-hash": "b1c67389c563a4613524173b2ec9076a",
     "packages": [
         {
             "name": "naf/framework",
