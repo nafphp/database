@@ -134,6 +134,35 @@ final class MigrationRunner
         }
     }
 
+    /**
+     * Read pending migrations without running them or modifying the tracker.
+     * Requires an existing migrations table; connection/tracker errors propagate.
+     * Unknown applied names are retained for packages that have been uninstalled.
+     *
+     * @return list<class-string<MigrationInterface>>
+     */
+    public function pending(array $paths): array
+    {
+        $files   = $this->discover($paths);
+        $applied = $this->connection->query('SELECT name FROM migrations')->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($applied as &$name) {
+            if (str_contains($name, '\\')) {
+                continue;
+            }
+            $matches = array_keys(array_filter($files, static fn($file) => basename($file, '.php') === $name));
+            if (count($matches) !== 1) {
+                throw new RuntimeException('Legacy migration identity cannot be resolved uniquely: ' . $name);
+            }
+            $name = $matches[0];
+        }
+        unset($name);
+
+        return array_values(array_filter(
+            array_keys($files),
+            static fn($class) => !in_array($class, $applied, true) && (new $class())->shouldRun(),
+        ));
+    }
+
     /** @return array<class-string<MigrationInterface>,string> */
     private function discover(array $paths): array
     {
