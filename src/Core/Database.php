@@ -15,15 +15,15 @@ class Database
     public function __construct(array $config, ?callable $pdoFactory = null)
     {
         $dsn      = $this->buildDsn($config);
-        $options  = $this->pdoOptions();
+        $options  = $this->pdoOptions($config['driver'] ?? 'mysql');
         $username = $config['username'] ?? null;
         $password = $config['password'] ?? null;
 
         try {
-            $pdoFactory ??= fn() => new PDO($dsn, $username, $password, $options);
-            $this->pdo = $pdoFactory();
+            $pdoFactory ??= static fn($dsn, $username, $password, $options) => new PDO($dsn, $username, $password, $options);
+            $this->pdo = $pdoFactory($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            throw new DatabaseException('Database connection failed: ' . $e->getMessage(), 0, $e);
+            throw new DatabaseException('Database connection failed.', 0, $e);
         }
     }
 
@@ -43,17 +43,17 @@ class Database
             return $this->buildSqliteDsn($config);
         }
 
+        foreach (['host', 'database', 'port', 'charset'] as $key) {
+            if (strpbrk((string) ($config[$key] ?? ''), ";\0") !== false) {
+                throw new DatabaseException('Invalid connection parameter: ' . $key);
+            }
+        }
+
         $defaultPort = $this->defaultPortForDriver($driver);
         $port        = $config['port'] ?? $defaultPort;
         $portSegment = $port !== null ? sprintf(';port=%s', $port) : '';
 
         if ($driver === 'pgsql') {
-            foreach (['host', 'database'] as $key) {
-                if (str_contains((string) ($config[$key] ?? ''), ';')) {
-                    throw new DatabaseException('Invalid PostgreSQL connection parameter: ' . $key);
-                }
-            }
-
             return sprintf(
                 'pgsql:host=%s;dbname=%s%s',
                 $config['host'] ?? '127.0.0.1',
@@ -100,11 +100,17 @@ class Database
     /**
      * Standardmäßige PDO-Options.
      */
-    private function pdoOptions(): array
+    private function pdoOptions(string $driver): array
     {
-        return [
+        $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ];
+
+        if ($driver === 'mysql') {
+            $options[PDO::ATTR_EMULATE_PREPARES] = false;
+        }
+
+        return $options;
     }
 }

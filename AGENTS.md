@@ -36,7 +36,9 @@ $product = $statement->fetch();
 
 The helper returns `?PDO`, not a query builder. Error mode is exceptions and rows default
 to associative arrays. Use bound parameters for values and allow-lists for dynamic identifiers.
-The 0.2.2 candidate lazily binds `PDO::class` to this same connection unless already bound.
+The plugin lazily binds `PDO::class` to this same connection unless already bound.
+MySQL uses native prepared statements by default. Connection failures have a generic message;
+inspect the previous exception only in protected diagnostics.
 
 ## Change it here
 
@@ -51,7 +53,10 @@ The direction is passed once. Do not copy another plugin's migrations into the h
 Run `composer test` and `composer validate --strict`. Use the [tests](tests/) for PDO/DSN
 fixtures. Test SQL or transaction behavior against the affected database engine; SQLite alone
 cannot establish PostgreSQL/MySQL concurrency behavior. Verify migrations and rollback on
-throwaway databases. No `analyse` script is declared.
+throwaway databases. Set `NAF_TEST_DB_DRIVER` to `mysql` or `pgsql`,
+`NAF_TEST_DB_PORT` to its local port and `NAF_TEST_DB_PASSWORD` for the network-driver
+regression test (database `naf_security`; user `root`/`postgres`). It uses only temporary
+tables, and CI supplies isolated MySQL 8.4 and PostgreSQL 17 services. No `analyse` script is declared.
 
 User docs: [Database](https://nafphp.github.io/docs/database/).
 
